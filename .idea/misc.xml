@@ -13,10 +13,17 @@
         <entry key="..\:/Users/Administrator/StudioProjects/MarsGateWay/app/src/main/res/layout/fragment_mars_rover_landing.xml" value="0.2" />
         <entry key="..\:/Users/Administrator/StudioProjects/MarsGateWay/app/src/main/res/layout/fragment_mars_weather.xml" value="0.22" />
         <entry key="..\:/Users/Administrator/StudioProjects/MarsGateWay/app/src/main/res/layout/item_mars_weather.xml" value="0.25" />
+        <entry key="..\:/Users/yunsoo/AndroidStudioProjects/MarsGateWay_1219/app/src/main/res/layout/activity_main.xml" value="0.10778985507246377" />
+        <entry key="..\:/Users/yunsoo/AndroidStudioProjects/MarsGateWay_1219/app/src/main/res/layout/activity_splash.xml" value="0.20364583333333333" />
+        <entry key="..\:/Users/yunsoo/AndroidStudioProjects/MarsGateWay_1219/app/src/main/res/layout/activity_today_picture.xml" value="0.1" />
+        <entry key="..\:/Users/yunsoo/AndroidStudioProjects/MarsGateWay_1219/app/src/main/res/layout/fragment_mars_rover_landing.xml" value="0.20364583333333333" />
+        <entry key="..\:/Users/yunsoo/AndroidStudioProjects/MarsGateWay_1219/app/src/main/res/layout/fragment_mars_weather.xml" value="0.1" />
+        <entry key="..\:/Users/yunsoo/AndroidStudioProjects/MarsGateWay_1219/app/src/main/res/layout/item_mars_weather.xml" value="0.20364583333333333" />
+        <entry key="..\:/Users/yunsoo/AndroidStudioProjects/MarsGateWay_1219/app/src/main/res/layout/row_rover_photo.xml" value="0.20364583333333333" />
       </map>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" project-jdk-name="11" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="11" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">

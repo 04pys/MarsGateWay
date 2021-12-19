@@ -16,6 +16,8 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.marsgateway.R;
+import com.example.marsgateway.databinding.ActivityMainBinding;
+import com.example.marsgateway.databinding.ActivityTodayPictureBinding;
 import com.example.marsgateway.util.SecretKeyClass;
 import com.example.marsgateway.data.api.NasaService;
 import com.example.marsgateway.model.PictureData;
@@ -28,13 +30,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class TodayPictureActivity extends AppCompatActivity {
 
-    TextView titleTv;
-    TextView explanationTv;
-    ImageView pictureImg;
-    TextView quitBtn;
     PictureData pictureData;
-    Toolbar toolbar;
-    WebView webView;
 
     private static final String CHECK_USER_DATE = "FIRST_MEET";
     private static final String TAG = "MainActivity";
@@ -42,29 +38,28 @@ public class TodayPictureActivity extends AppCompatActivity {
     private static final String CHECK_EVNET_POPUP_NO = "CHECK_EVNET_POPUP_NO";
     private static final String CHECK_EVNET_POPUP_YES = "CHECK_EVNET_POPUP_YES";
     private String event_popup_result;
+    private ActivityTodayPictureBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_today_picture);
 
-        titleTv = findViewById(R.id.titleTv);
-        explanationTv = findViewById(R.id.explanationTv);
-        pictureImg = findViewById(R.id.pictureImg);
-        quitBtn = findViewById(R.id.quitBtn);
-        explanationTv.setMovementMethod(new ScrollingMovementMethod());
-        toolbar = findViewById(R.id.toolbar);
-        webView = findViewById(R.id.pictureVideo);
+        // setup instance
+        binding = ActivityTodayPictureBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
 
-        pictureImg.setVisibility(View.INVISIBLE);
-        webView.setVisibility(View.INVISIBLE);
+        binding.explanationTv.setMovementMethod(new ScrollingMovementMethod());
 
-        setSupportActionBar(toolbar);
-        toolbar.setTitle("Today's Astronomical picture");
+        binding.pictureImg.setVisibility(View.INVISIBLE);
+        binding.pictureVideo.setVisibility(View.INVISIBLE);
+
+        setSupportActionBar(binding.toolbar);
+        binding.toolbar.setTitle("Today's Astronomical picture");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_baseline_arrow_back_24);
 
-        quitBtn.setPaintFlags(quitBtn.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+        binding.quitBtn.setPaintFlags(binding.quitBtn.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
 
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("https://api.nasa.gov/")
@@ -83,23 +78,23 @@ public class TodayPictureActivity extends AppCompatActivity {
                     TodayPictureActivity.this.pictureData = pictureData;
                     if (pictureData.media_type.equals("video")) {
                         Log.d(TAG, "onResponse: success");
-                        titleTv.setText(pictureData.title);
-                        explanationTv.setText(pictureData.explanation);
+                        binding.titleTv.setText(pictureData.title);
+                        binding.explanationTv.setText(pictureData.explanation);
                         Activity activity = TodayPictureActivity.this;
-                        webView.loadUrl(pictureData.url);
-                        webView.setVisibility(View.VISIBLE);
+                        binding.pictureVideo.loadUrl(pictureData.url);
+                        binding.pictureVideo.setVisibility(View.VISIBLE);
 
 
                     } else {
-                        titleTv.setText(pictureData.title);
-                        explanationTv.setText(pictureData.explanation);
+                        binding.titleTv.setText(pictureData.title);
+                        binding.explanationTv.setText(pictureData.explanation);
                         Activity activity = TodayPictureActivity.this;
                         if (activity.isFinishing())
                             return;
                         Glide.with(activity)
                                 .load(pictureData.url)
-                                .into(pictureImg);
-                        pictureImg.setVisibility(View.VISIBLE);
+                                .into(binding.pictureImg);
+                        binding.pictureImg.setVisibility(View.VISIBLE);
                         Log.d(TAG, "media_type: " + pictureData.media_type);
                     }
                 } else {
@@ -114,7 +109,7 @@ public class TodayPictureActivity extends AppCompatActivity {
             }
         });
 
-        quitBtn.setOnClickListener(view -> {
+        binding.quitBtn.setOnClickListener(view -> {
             getApplication().getSharedPreferences("event_popup", MODE_PRIVATE).edit().putString(CHECK_EVNET_POPUP, CHECK_EVNET_POPUP_YES).apply();
             finish();
         });
