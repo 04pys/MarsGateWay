@@ -2,8 +2,14 @@ package com.example.marsgateway.view.todaypicture;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.ViewModel;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelProviders;
 
 import android.app.Activity;
+import android.app.Application;
 import android.graphics.Paint;
 import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
@@ -21,6 +27,7 @@ import com.example.marsgateway.databinding.ActivityTodayPictureBinding;
 import com.example.marsgateway.util.SecretKeyClass;
 import com.example.marsgateway.data.api.NasaService;
 import com.example.marsgateway.model.PictureData;
+import com.example.marsgateway.viewmodel.TodayPictureViewModel;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -37,17 +44,19 @@ public class TodayPictureActivity extends AppCompatActivity {
     private static final String CHECK_EVNET_POPUP = "CHECK_EVNET_POPUP";
     private static final String CHECK_EVNET_POPUP_NO = "CHECK_EVNET_POPUP_NO";
     private static final String CHECK_EVNET_POPUP_YES = "CHECK_EVNET_POPUP_YES";
+    private TodayPictureViewModel viewModel;
     private String event_popup_result;
     private ActivityTodayPictureBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_today_picture);
-
         // setup instance
-        binding = ActivityTodayPictureBinding.inflate(getLayoutInflater());
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_today_picture);
         setContentView(binding.getRoot());
+        viewModel = new ViewModelProvider(this).get(TodayPictureViewModel.class);
+        binding.setLifecycleOwner(this);
+        binding.setViewModel(viewModel);
 
         binding.explanationTv.setMovementMethod(new ScrollingMovementMethod());
 
@@ -76,18 +85,24 @@ public class TodayPictureActivity extends AppCompatActivity {
                 if (response.isSuccessful()) {
                     PictureData pictureData = response.body();
                     TodayPictureActivity.this.pictureData = pictureData;
+                    assert pictureData != null;
+                    viewModel.titleTv.postValue(pictureData.title);
+                    Log.d(TAG,"타이틀 "+viewModel.titleTv);
+                    viewModel.explanationTv.postValue(pictureData.explanation);
+                    Log.d(TAG,"설명 : "+viewModel.explanationTv);
+                    Log.d(TAG,"today");
                     if (pictureData.media_type.equals("video")) {
                         Log.d(TAG, "onResponse: success");
-                        binding.titleTv.setText(pictureData.title);
-                        binding.explanationTv.setText(pictureData.explanation);
+                        //binding.titleTv.setText(pictureData.title);
+                        //binding.explanationTv.setText(pictureData.explanation);
                         Activity activity = TodayPictureActivity.this;
                         binding.pictureVideo.loadUrl(pictureData.url);
                         binding.pictureVideo.setVisibility(View.VISIBLE);
 
 
                     } else {
-                        binding.titleTv.setText(pictureData.title);
-                        binding.explanationTv.setText(pictureData.explanation);
+                        //binding.titleTv.setText(pictureData.title);
+                        //binding.explanationTv.setText(pictureData.explanation);
                         Activity activity = TodayPictureActivity.this;
                         if (activity.isFinishing())
                             return;
